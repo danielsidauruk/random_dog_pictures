@@ -11,36 +11,54 @@ class RandomDogPage extends StatefulWidget {
 class _RandomDogPageState extends State<RandomDogPage> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<RandomDogProvider>(
-      builder: (context, state, _) {
-        if (state.state == ResultState.loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state.state == ResultState.hasData) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                  'Status : ${state.result.status}',
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
-                      fontStyle: FontStyle.normal,
-                  )
-              ),
-              const SizedBox(height: 8.0),
-              Image.network(state.result.message)
-            ],
-          );
-        } else if (state.state == ResultState.noData) {
-          return Center(child: Text(state.message));
-        } else if (state.state == ResultState.error) {
-          return Center(child: Text(state.message));
-        } else {
-          return const Center(child: Text(''));
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+          title: const Text('Random Dog Pictures')
+      ),
+      body: Consumer<RandomDogProvider>(
+        builder: (context, state, _) {
+          if (state.state == ResultState.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state.state == ResultState.hasData) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                        'Status : ',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontStyle: FontStyle.normal,
+                        )
+                    ),
+                    Text(state.result.status,
+                      style: const TextStyle(
+                        color: Colors.green,
+                          fontSize: 25,
+                        fontWeight: FontWeight.bold
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 8.0),
+                Image.network(state.result.message)
+              ],
+            );
+          } else if (state.state == ResultState.noData) {
+            return Center(child: Text(state.message));
+          } else if (state.state == ResultState.error) {
+            return Center(child: Text(state.message));
+          } else {
+            return const Center(child: Text(''));
+          }
+        },
+      ),
     );
   }
 }
